@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: microservice
+          uri: http://microservice-gowthamanprojects-dev.apps.rm2.thpm.p1.openshiftapps.com  # Your microservice route
+          predicates:
+            - Path=/v3/api-docs/microservice,/api/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+swagger:
+  ui: /swagger-ui.html
+  config:
+    refreshrate: 60000
+springdoc:
+  api-docs:
+    path: /v3/api-docs
