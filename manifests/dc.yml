@@ -1,0 +1,38 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: gateway
+  namespace: gowthamanprojects-dev
+spec:
+  replicas: 1
+  selector:
+    app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: image-registry.openshift-image-registry.svc:5000/gowthamanprojects-dev/gateway:latest
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+  triggers:
+    - type: ConfigChange  # Redeploys if DeploymentConfig changes
+    - type: ImageChange  # Redeploys when the `gateway:latest` image updates
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - gateway
+        from:
+          kind: ImageStreamTag
+          name: gateway:latest
+          namespace: gowthamanprojects-dev

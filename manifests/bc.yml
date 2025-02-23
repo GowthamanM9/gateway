@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: gateway-build
+  namespace: gowthamanprojects-dev
+spec:
+  source:
+    type: Binary
+    binary: {}
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: DockerImage  # Changed from ImageStreamTag
+        name: registry.access.redhat.com/ubi8/openjdk-21:latest  # Raw Docker imageoc apply -f bc.yml -n gowthamanprojects-dev
+  output:
+    to:
+      kind: ImageStreamTag
+      name: gateway:latest
+  triggers:
+    - type: ConfigChange  # Rebuilds if BuildConfig changes
+  completionDeadlineSeconds: 1200  # 20 minutes

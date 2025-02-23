@@ -1,0 +1,9 @@
+# gateway-is.yml
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: gateway
+  namespace: gowthamanprojects-dev
+spec:
+  lookupPolicy:
+    local: false

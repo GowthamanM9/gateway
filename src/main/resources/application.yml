@@ -6,6 +6,7 @@ spring:
     gateway:
       routes:
         - id: microservice
+          # uri: http://localhost:8081  # Your microservice route
           uri: http://microservice-gowthamanprojects-dev.apps.rm2.thpm.p1.openshiftapps.com  # Your microservice route
           predicates:
             - Path=/v3/api-docs/microservice,/api/**
