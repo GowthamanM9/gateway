@@ -6,8 +6,8 @@ spring:
     gateway:
       routes:
         - id: microservice
-          uri: http://localhost:8081  # Your microservice route
-          # uri: http://microservice-gowthamanprojects-dev.apps.rm2.thpm.p1.openshiftapps.com  # Your microservice route
+          # uri: http://localhost:8081  # Your microservice route
+          uri: http://microservice-gowthamanprojects-dev.apps.rm2.thpm.p1.openshiftapps.com  # Your microservice route
           predicates:
             - Path=/v3/api-docs/microservice,/api/**
           filters:
@@ -21,7 +21,7 @@ spring:
         opaque-token:
           introspection-uri: http://keycloak-gowthamanprojects-dev.apps.rm2.thpm.p1.openshiftapps.com/realms/myrealm/protocol/openid-connect/token/introspect
           client-id: gateway-client
-          client-secret: IyDhXnUjTfe8A8FdDI78Mno0mm279g54
+          client-secret: eEg3lgvbPkueGCHfeNgsRS1SpOPLMrJq
 
 management:
   endpoints:
