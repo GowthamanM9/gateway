@@ -1,0 +1,60 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: keycloak
+  namespace: gowthamanprojects-dev
+spec:
+  replicas: 1
+  selector:
+    app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:23.0.7
+        env:
+        - name: KEYCLOAK_ADMIN
+          value: "admin"
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: "admin"
+        command: ["/opt/keycloak/bin/kc.sh"]
+        args: ["start-dev"]
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+  namespace: gowthamanprojects-dev
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: keycloak
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: keycloak
+  namespace: gowthamanprojects-dev
+spec:
+  to:
+    kind: Service
+    name: keycloak
+  port:
+    targetPort: 8080
+  wildcardPolicy: None

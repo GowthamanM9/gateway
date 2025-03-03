@@ -7,7 +7,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 @Component
 public class AddAuthTokenHeaderGatewayFilterFactory extends AbstractGatewayFilterFactory<AddAuthTokenHeaderGatewayFilterFactory.Config> {
@@ -24,10 +23,12 @@ public class AddAuthTokenHeaderGatewayFilterFactory extends AbstractGatewayFilte
             return exchange.getPrincipal()
                     .cast(BearerTokenAuthentication.class)
                     .map(auth -> {
-                        String token = auth.getToken().getTokenValue();
-                        logger.info("Extracted token: {}", token);
+                        Object preferredUsername = auth.getTokenAttributes().get("preferred_username");
+                        String username = preferredUsername != null ? preferredUsername.toString() : "anonymous";
+
+                        // Add it as a custom header
                         ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
-                                .header("X-Auth-Token", token)
+                                .header("X-Preferred-Username", username)
                                 .build();
                         logger.info("Request headers after mutation: {}", modifiedRequest.getHeaders());
                         return exchange.mutate().request(modifiedRequest).build();

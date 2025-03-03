@@ -25,6 +25,9 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "500m"
+          env:
+             - name: SERVER_MAX_HTTP_HEADER_SIZE
+               value: "32768"  # Pass as environment variable
   triggers:
     - type: ConfigChange  # Redeploys if DeploymentConfig changes
     - type: ImageChange  # Redeploys when the `gateway:latest` image updates

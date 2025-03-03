@@ -17,6 +17,8 @@ kind: Route
 metadata:
   name: gateway
   namespace: gowthamanprojects-dev
+  annotations:
+    haproxy.router.openshift.io/max-header-size: "32768"  # Match app’s limit
 spec:
   to:
     kind: Service

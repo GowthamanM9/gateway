@@ -1,5 +1,6 @@
 server:
   port: 8080
+  max-http-header-size: 32768  # Increase to 32KB (default is 8KB)
 
 spring:
   cloud:
@@ -13,6 +14,7 @@ spring:
           filters:
             - AddAuthTokenHeader
             - RemoveRequestHeader=Authorization
+            - RemoveRequestHeader=Cookie
       default-filters:
         - PreserveHostHeader
   security:
@@ -27,7 +29,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: '*'  # Expose all endpoints
 swagger:
   ui: /swagger-ui.html
   config:
@@ -38,4 +40,5 @@ springdoc:
 logging:
   level:
     com.poc.gateway: DEBUG
+    org.springframework.boot: DEBUG
     org.springframework.cloud.gateway: DEBUG

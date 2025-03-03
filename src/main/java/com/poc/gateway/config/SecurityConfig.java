@@ -22,7 +22,7 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
         return http
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/webjars/swagger-ui/**").permitAll()
+                        .pathMatchers("/v3/api-docs/**", "/swagger-ui.html", "/webjars/swagger-ui/**", "/actuator/**").permitAll()
                         .pathMatchers( "/api/**").authenticated()
                         .anyExchange().authenticated()
                 )
